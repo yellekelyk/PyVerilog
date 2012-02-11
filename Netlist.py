@@ -6,12 +6,48 @@ import ConfigParser
 from ordereddict import OrderedDict
 import os
 import yaml
-from lib.Utils.myutils import *
 import re
 import verilogParse
 
+import myutils
+
+
 class Netlist:
-    "A Verilog Netlist"
+    """
+    This class is a Python datastructure for storing/querying Verilog
+    netlists.
+
+    The Netlist module is able to read both from Verilog files and special 
+    YAML-formatted files. The YAML format is currently much faster. I have 
+    a separate Verilog-->YAML converter that I've used to create YAML files up
+    until now (based in Perl, booo). The Verilog support in Python is newly
+    added.
+
+    This example shows how to read and link netlists. It demonstrates both 
+    reading from Verilog (n1) and YAML (n2), and then verifies that
+    the a few of the netlist properties match.
+
+    >>> nl1 = Netlist()
+    >>> nl2 = Netlist()
+    >>> nl1.readYAML("test/gates.yml")
+    >>> nl2.readYAML("test/gates.yml")
+    >>> nl1.readVerilog("test/Iface_test.gv")
+    >>> nl2.readYAML("test/Iface_test.yml")
+    >>> nl1.link("Iface_test")
+    >>> nl2.link("Iface_test")
+    >>> nl1.topMod
+    'Iface_test'
+    >>> nl2.topMod
+    'Iface_test'
+    >>> mod1 = nl1.mods[nl1.topMod]
+    >>> mod2 = nl2.mods[nl2.topMod]
+    >>> set(mod1.ports.keys()) == set(mod2.ports.keys())
+    True
+    >>> set(mod1.cells.keys()) == set(mod2.cells.keys())
+    True
+    >>> set(mod1.nets.keys()) == set(mod2.nets.keys())
+    True
+    """
 
     def __init__(self):
         self.__mods = dict()
@@ -42,11 +78,6 @@ class Netlist:
                                 " have not been defined"))
 
         for cell in mod.cells:
-            #if mod.cells[cell].submodname not in self.__mods:
-            #    raise Exception(str("link error, " +  
-            #                        mod.cells[cell].submodname +
-            #                        " has not been defined"))
-            
             submod = self.__mods[mod.cells[cell].submodname]
             mod.cells[cell].linkMod(submod)
             for pin in mod.cells[cell].pins:
@@ -79,51 +110,6 @@ class Netlist:
         pass
 
 
-#    def segmentDesign(self):
-#        "segment the design into combinational blocks"
-#        pass
-#    
-#
-#    def findDFS(self):
-#        " do a DFS search of the modules"
-#        T = OrderedDict()
-#        visited = OrderedDict()
-#        df = OrderedDict()
-#
-#        # initialize all visited as False
-#        cells = self.mods[self.topMod].cells
-#        for cell in cells:
-#            visited[cells[cell]] = False
-#
-#        c = len(cells)
-#        dfsArgs = {'T': T, 'visited': visited, 'c': c, 'df' : df}
-#        dfsArgs = self.__findDFS__(dfsArgs, visited.keys()[0])
-#        return dfsArgs['df']
-#
-#    def __findDFS__(self, dfsArgs, cell):
-#        c = dfsArgs['c']
-#
-#        dfsArgs['visited'][cell] = True
-#        
-#        print "Looking at cell " + cell.name
-#        
-#        for pinstr in cell.pins:
-#
-#            print "looking at pin " + pinstr
-#
-#            pin = cell.pins[pinstr]
-#            # look through all successor nodes
-#            if pin.port.direction == "out":
-#                for inpin in pin.net.fanout:
-#                    print "fans out to " + inpin.name
-#                    if not dfsArgs['visited'][inpin.cell]:
-#                        dfsArgs['T'][(cell, inpin.cell)] = True
-#                        self.__findDFS__(dfsArgs, inpin.cell)
-#
-#        dfsArgs['df'][cell] = c
-#        dfsArgs['c'] = c-1
-#        return dfsArgs
-
     def addModule(self, mod):
         modname = mod.name
         if modname in self.__mods:
@@ -149,7 +135,7 @@ class Netlist:
         for modname in nl.keys():
             mod = Module.Module({"name":modname})
 
-            inputs = cleanget(nl.get(modname), "inputs")
+            inputs = myutils.cleanget(nl.get(modname), "inputs")
             for name in inputs:
                 #todo: add parsing code to determine width msb/lsb here
                 width = int(inputs.get(name))
@@ -159,7 +145,7 @@ class Netlist:
                                                 "width":tup[1], 
                                                 "module":mod}))
 
-            outputs = cleanget(nl.get(modname), "outputs")
+            outputs = myutils.cleanget(nl.get(modname), "outputs")
             for name in outputs:
                 #todo: add parsing code to determine width msb/lsb here
                 width = int(outputs.get(name))
@@ -169,16 +155,16 @@ class Netlist:
                                                   "width":tup[1], 
                                                   "module":mod}))
 
-            clocks = cleanget(nl.get(modname), "clocks")
+            clocks = myutils.cleanget(nl.get(modname), "clocks")
             for name in clocks:
                 mod.add_port(PortClk.PortClk({"name":name, "module":mod}))
 
-            cells = cleanget(nl.get(modname), "cells")
+            cells = myutils.cleanget(nl.get(modname), "cells")
             for name in cells:
                 submodname = cells.get(name)
                 mod.new_cell({"name":name, "submodname":submodname})
 
-            conns = cleanget(nl.get(modname), "connections")
+            conns = myutils.cleanget(nl.get(modname), "connections")
             for name in conns:
                 ports = conns.get(name)
                 if name in mod.ports:
@@ -214,51 +200,6 @@ class Netlist:
         return tuples
 
 
-
-#    def readConfig(self, configFile):
-#
-#        "Read a configuration file (likely DEPRECATED), build a netlist"
-#
-#        config = ConfigParser.SafeConfigParser(None, dict_type=OrderedDict)
-#        # make options case-sensitive
-#        config.optionxform = str
-#        config.read(configFile)
-#
-#        name = os.path.splitext(os.path.basename(configFile))[0]
-#        
-#        mod = Module.Module({"name":name})
-#
-#        for name in config.options("INPUTS"):
-#            #todo: add parsing code to determine width msb/lsb here
-#            width = int(config.get("INPUTS", name))
-#            mod.new_port({"name":name, "width":width, "direction":"in"})
-#
-#        for name in config.options("OUTPUTS"):
-#            #todo: add parsing code to determine width msb/lsb here
-#            width = int(config.get("OUTPUTS", name))
-#            mod.new_port({"name":name, "width":width, "direction":"out"})
-#
-#        for name in config.options("CELLS"):
-#            submodname = config.get("CELLS", name)
-#            mod.new_cell({"name":name, "submodname":submodname})
-#
-#        for name in config.options("CONNECTIONS"):
-#            ports = config.get("CONNECTIONS", name)
-#            if name in mod.ports:
-#                net = mod.ports.get(name)
-#            else:
-#                #todo: add parsing code to determine width msb/lsb here
-#                net = mod.new_net({"name":name, "width":1})
-#                
-#            for conn in ports.split():
-#                cellport = conn.split('.')
-#                if len(cellport) != 2:
-#                    raise Exception("Bad port: " + conn)
-#                cell  = mod.cells.get(cellport[0])
-#                pname = cellport[1]                
-#                pin = cell.new_pin({"name":pname, "portname":pname})
-#                pin.connectNet(net)
-#
-#        self.__mods[mod.name] = mod
-                
-
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

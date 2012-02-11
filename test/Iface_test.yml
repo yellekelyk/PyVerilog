@@ -1,0 +1,247 @@
+Iface_test: 
+  clocks: 
+    clk: 1
+  inputs: 
+    valid_in: 1
+    reset: 1
+    data_in: 6
+  outputs: 
+    cap: 3
+    ready_out: 1
+    valid_out: 1
+    data_out: 6
+  cells: 
+    U83: AOI221D1
+    U64: INVD1
+    U127: OAI32D1
+    q_entry_reg_3__0_: EDFQD1
+    U65: NR2D1
+    q_entry_reg_2__5_: EDFQD1
+    U126: OAI33D1
+    q_entry_reg_3__1_: EDFQD1
+    U78: MAOI22D1
+    U123: INVD1
+    U82: AOI22D1
+    U125: INVD1
+    U93: AOI221D1
+    U112: INVD1
+    U74: NR2D1
+    U98: AOI221D1
+    U75: NR2D1
+    U135: NR2D1
+    U104: AOI21D1
+    U87: AOI22D1
+    q_entry_reg_2__4_: EDFQD1
+    U79: MAOI22D1
+    q_entry_reg_0__0_: EDFQD1
+    U73: NR2D1
+    U128: AO221D1
+    U86: INVD1
+    U92: AOI22D1
+    U116: INR2D1
+    U136: ND3D1
+    U66: NR2D1
+    U107: CKND2D1
+    U80: INVD1
+    U133: AOI21D1
+    U120: NR2D1
+    U70: ND2D1
+    q_headReg_q_reg_0_: DFKCNQD1
+    U67: INVD1
+    U111: INVD1
+    q_entry_reg_3__3_: EDFQD1
+    q_tailReg_q_reg_1_: DFKCNQD1
+    U81: INVD1
+    q_entry_reg_0__4_: EDFQD1
+    U132: OA21D1
+    U124: NR2D1
+    q_entry_reg_2__3_: EDFQD1
+    q_entry_reg_0__5_: EDFQD1
+    q_entry_reg_3__4_: EDFQD1
+    q_entry_reg_0__3_: EDFQD1
+    U131: ND3D1
+    q_headReg_q_reg_1_: DFKCNQD1
+    U95: AO22D1
+    U117: INR2D1
+    q_capacity_reg_2_: DFQD1
+    q_entry_reg_3__2_: EDFQD1
+    U122: NR2D1
+    q_entry_reg_2__1_: EDFQD1
+    U89: AOI21D1
+    U118: INR2D1
+    q_entry_reg_1__0_: EDFQD1
+    fsm0_state_reg_0_: DFKCNQD1
+    U71: NR2D1
+    U5: OR2XD1
+    U94: AOI21D1
+    q_entry_reg_1__1_: EDFQD1
+    q_tailReg_q_reg_0_: DFKCNQD1
+    U77: XOR2D1
+    q_capacity_reg_1_: DFKCNQD1
+    q_entry_reg_2__0_: EDFQD1
+    U97: AOI22D1
+    U103: AOI221D1
+    q_entry_reg_0__2_: EDFQD1
+    fsm1_state_reg_0_: DFKCNQD1
+    U90: AO22D1
+    U110: ND2D1
+    q_entry_reg_0__1_: EDFQD1
+    q_entry_reg_1__3_: EDFQD1
+    U114: INVD1
+    U119: INR2D1
+    U121: INVD1
+    U134: NR2D1
+    q_entry_reg_1__2_: EDFQD1
+    U102: AOI22D1
+    U88: AOI221D1
+    U63: INR2D1
+    U108: CKND2D1
+    U115: IOA21D1
+    fsm0_state_reg_1_: DFKCNQD1
+    U84: AOI21D1
+    q_entry_reg_1__4_: EDFQD1
+    q_entry_reg_3__5_: EDFQD1
+    U72: AOI211D1
+    q_entry_reg_1__5_: EDFQD1
+    q_entry_reg_2__2_: EDFQD1
+    U106: CKND2D1
+    q_capacity_reg_0_: DFKCNQD1
+    U96: INVD1
+    U100: AO22D1
+    U109: ND2D1
+    U113: OA21D1
+    U85: AO22D1
+    U130: OAI21D1
+    U91: INVD1
+    U69: NR2D1
+    U68: NR2D1
+    U101: INVD1
+    U138: MUX4D1
+    U105: AO22D1
+    U137: IND3D1
+    U76: NR2D1
+    U99: AOI21D1
+    fsm1_state_reg_1_: DFKCNQD1
+    U129: AOI22D1
+  connections: 
+    q_entry[23]: U102.A2 q_entry_reg_3__5_.Q
+    n2: U74.ZN q_entry_reg_2__0_.E q_entry_reg_2__1_.E q_entry_reg_2__2_.E q_entry_reg_2__3_.E q_entry_reg_2__4_.E q_entry_reg_2__5_.E
+    n8: U136.A3 U137.B2 U80.ZN fsm0_state_reg_1_.D fsm1_state_reg_1_.D q_capacity_reg_0_.CN q_capacity_reg_1_.CN q_headReg_q_reg_0_.CN q_headReg_q_reg_1_.CN q_tailReg_q_reg_0_.CN q_tailReg_q_reg_1_.CN
+    valid_in: U117.A1
+    q_entry[13]: U82.B1 q_entry_reg_2__1_.Q
+    n72: U104.ZN U105.B2
+    q_entry[5]: U103.B1 q_entry_reg_0__5_.Q
+    q_head_0_: U101.I U102.A1 U103.A2 U138.S0 U67.I U81.I U82.A1 U83.A2 U86.I U87.A1 U88.A2 U91.I U92.A1 U93.A2 U96.I U97.A1 U98.A2 q_headReg_q_reg_0_.Q
+    n54: U82.ZN U84.A2
+    n88: U129.ZN U130.B
+    data_in[4]: U100.A1 q_entry_reg_0__4_.D q_entry_reg_1__4_.D q_entry_reg_2__4_.D q_entry_reg_3__4_.D
+    n4: U76.ZN q_entry_reg_1__0_.E q_entry_reg_1__1_.E q_entry_reg_1__2_.E q_entry_reg_1__3_.E q_entry_reg_1__4_.E q_entry_reg_1__5_.E
+    n94: U131.ZN U132.B U77.A2
+    cap[1]: U106.A2 U121.I U126.A2 U129.A1 U130.A1 U66.A2 q_capacity_reg_1_.Q
+    n61: U91.ZN U92.B2 U93.B2
+    n75: U110.A2 U113.A2 U63.B1 U70.ZN
+    data_in[1]: U85.A1 q_entry_reg_0__1_.D q_entry_reg_1__1_.D q_entry_reg_2__1_.D q_entry_reg_3__1_.D
+    n53: U81.ZN U82.B2 U83.B2
+    q_entry[12]: U138.I2 q_entry_reg_2__0_.Q
+    n64: U94.ZN U95.B2
+    n60: U89.ZN U90.B2
+    n7: U134.ZN fsm0_state_reg_0_.CN
+    n82: U128.C U69.ZN U79.A1 U79.B2
+    n42: U133.ZN q_headReg_q_reg_0_.D
+    q_entry[22]: U97.A2 q_entry_reg_3__4_.Q
+    n55: U83.ZN U84.B
+    q_entry[14]: U87.B1 q_entry_reg_2__2_.Q
+    n63: U93.ZN U94.B
+    cap[2]: U111.I U127.A1 U70.A1 q_capacity_reg_2_.Q
+    n46: U130.ZN q_capacity_reg_1_.D
+    n71: U103.ZN U104.B
+    data_out[2]: U90.Z
+    n95: U133.B U68.ZN U78.A1 U78.B2
+    n51: U118.ZN U135.A2 fsm1_state_reg_1_.CN
+    q_entry[2]: U88.B1 q_entry_reg_0__2_.Q
+    n65: U96.ZN U97.B2 U98.B2
+    n48: U127.ZN U5.A2
+    n92: U123.ZN U124.A2 U65.A2
+    n74: U109.ZN U115.B
+    q_entry[8]: U88.A1 q_entry_reg_1__2_.Q
+    q_entry[4]: U98.B1 q_entry_reg_0__4_.Q
+    n1: U73.ZN q_entry_reg_3__0_.E q_entry_reg_3__1_.E q_entry_reg_3__2_.E q_entry_reg_3__3_.E q_entry_reg_3__4_.E q_entry_reg_3__5_.E
+    q_entry[20]: U87.A2 q_entry_reg_3__2_.Q
+    n101: U64.ZN U73.A1 U74.A1 U77.A1
+    data_in[2]: U90.A1 q_entry_reg_0__2_.D q_entry_reg_1__2_.D q_entry_reg_2__2_.D q_entry_reg_3__2_.D
+    q_tail_1_: U64.I U75.A1 U76.A1 q_tailReg_q_reg_1_.Q
+    n80: U126.ZN U127.B1
+    n85: U107.A1 U124.ZN U126.B2 U128.B2 U129.B2 U69.A1
+    q_entry[16]: U97.B1 q_entry_reg_2__4_.Q
+    q_entry[21]: U92.A2 q_entry_reg_3__3_.Q
+    n93: U100.A2 U105.A2 U114.I U115.A1 U63.ZN U65.A1 U85.A2 U90.A2 U95.A2
+    n43: U78.ZN q_headReg_q_reg_1_.D
+    fsm1_nextState_0_: U113.Z U63.A1 fsm1_state_reg_0_.D
+    q_entry[6]: U138.I1 q_entry_reg_1__0_.Q
+    n49: U116.ZN U134.A2 fsm0_state_reg_1_.CN
+    data_in[3]: U95.A1 q_entry_reg_0__3_.D q_entry_reg_1__3_.D q_entry_reg_2__3_.D q_entry_reg_3__3_.D
+    n78: U107.ZN U126.A3
+    data_out[0]: U115.ZN
+    n89: U108.ZN U127.A3 U130.A2
+    clk: fsm0_state_reg_0_.CP fsm0_state_reg_1_.CP fsm1_state_reg_0_.CP fsm1_state_reg_1_.CP q_capacity_reg_0_.CP q_capacity_reg_1_.CP q_capacity_reg_2_.CP q_entry_reg_0__0_.CP q_entry_reg_0__1_.CP q_entry_reg_0__2_.CP q_entry_reg_0__3_.CP q_entry_reg_0__4_.CP q_entry_reg_0__5_.CP q_entry_reg_1__0_.CP q_entry_reg_1__1_.CP q_entry_reg_1__2_.CP q_entry_reg_1__3_.CP q_entry_reg_1__4_.CP q_entry_reg_1__5_.CP q_entry_reg_2__0_.CP q_entry_reg_2__1_.CP q_entry_reg_2__2_.CP q_entry_reg_2__3_.CP q_entry_reg_2__4_.CP q_entry_reg_2__5_.CP q_entry_reg_3__0_.CP q_entry_reg_3__1_.CP q_entry_reg_3__2_.CP q_entry_reg_3__3_.CP q_entry_reg_3__4_.CP q_entry_reg_3__5_.CP q_headReg_q_reg_0_.CP q_headReg_q_reg_1_.CP q_tailReg_q_reg_0_.CP q_tailReg_q_reg_1_.CP
+    q_head_1_: U103.C U104.A1 U138.S1 U78.A2 U78.B1 U83.C U84.A1 U88.C U89.A1 U93.C U94.A1 U98.C U99.A1 q_headReg_q_reg_1_.Q
+    n83: U106.A1 U108.A2 U122.ZN U126.A1 U128.A2 U69.A2
+    n3: U75.ZN q_entry_reg_0__0_.E q_entry_reg_0__1_.E q_entry_reg_0__2_.E q_entry_reg_0__3_.E q_entry_reg_0__4_.E q_entry_reg_0__5_.E
+    n100: U136.ZN U73.A2 U76.A2
+    data_out[3]: U95.Z
+    cap[0]: U108.A1 U125.I U128.B1 U66.A1 q_capacity_reg_0_.Q
+    valid_out: U119.ZN
+    n69: U101.ZN U102.B2 U103.B2
+    n81: U121.ZN U127.A2
+    n99: U137.ZN U74.A2 U75.A2
+    fsm0_state_0_: U116.A1 U120.A1 U72.B fsm0_state_reg_0_.Q
+    q_entry[3]: U93.B1 q_entry_reg_0__3_.Q
+    ready_out: U120.ZN
+    q_entry[10]: U98.A1 q_entry_reg_1__4_.Q
+    n76: U110.A1 U113.B U124.A1 U71.ZN
+    n86: U129.B1 U66.ZN U70.A2 U72.A1
+    n59: U88.ZN U89.B
+    n5: U5.Z q_capacity_reg_2_.D
+    q_entry[19]: U82.A2 q_entry_reg_3__1_.Q
+    q_N21: U109.A1 U138.Z
+    n57: U86.ZN U87.B2 U88.B2
+    q_entry[1]: U83.B1 q_entry_reg_0__1_.Q
+    n68: U100.B2 U99.ZN
+    n58: U87.ZN U89.A2
+    n84: U107.A2 U125.ZN U126.B1 U128.A1 U79.A2 U79.B1
+    n98: U132.A1 U136.A2 U137.B1 U65.ZN
+    fsm1_state_0_: U118.A1 U119.B1 U71.A2 fsm1_state_reg_0_.Q
+    n67: U98.ZN U99.B
+    data_out[5]: U105.Z
+    data_in[0]: U115.A2 q_entry_reg_0__0_.D q_entry_reg_1__0_.D q_entry_reg_2__0_.D q_entry_reg_3__0_.D
+    fsm1_state_1_: U118.B1 U119.A1 U71.A1 fsm1_state_reg_1_.Q
+    n79: U111.ZN U127.B2 U72.A2
+    n96: U133.A2 U67.ZN U68.A2
+    data_in[5]: U105.A1 q_entry_reg_0__5_.D q_entry_reg_1__5_.D q_entry_reg_2__5_.D q_entry_reg_3__5_.D
+    q_tail_0_: U131.A2 U132.A2 U136.A1 U137.A1 q_tailReg_q_reg_0_.Q
+    q_entry[7]: U83.A1 q_entry_reg_1__1_.Q
+    n66: U97.ZN U99.A2
+    n56: U84.ZN U85.B2
+    n97: U110.ZN U122.A2 U133.A1 U68.A1
+    q_entry[9]: U93.A1 q_entry_reg_1__3_.Q
+    n47: U79.ZN q_capacity_reg_0_.D
+    q_entry[18]: U138.I3 q_entry_reg_3__0_.Q
+    n77: U106.ZN U126.B3
+    fsm0_state_1_: U112.I U116.B1 U117.B1 U120.A2 fsm0_state_reg_1_.Q
+    q_entry[17]: U102.B1 q_entry_reg_2__5_.Q
+    reset: U134.A1 U135.A1 U5.A1 U80.I
+    q_entry[15]: U92.B1 q_entry_reg_2__3_.Q
+    n70: U102.ZN U104.A2
+    n45: U77.Z q_tailReg_q_reg_1_.D
+    q_entry[0]: U138.I0 q_entry_reg_0__0_.Q
+    n73: U112.ZN U72.C
+    fsm0_nextState_0_: U117.ZN fsm0_state_reg_0_.D
+    n62: U92.ZN U94.A2
+    data_out[4]: U100.Z
+    n44: U132.Z q_tailReg_q_reg_0_.D
+    n91: U113.A1 U122.A1 U123.I U131.A1 U72.ZN
+    n87: U128.Z U129.A2
+    data_out[1]: U85.Z
+    n6: U135.ZN fsm1_state_reg_0_.CN
+    q_entry[11]: U103.A1 q_entry_reg_1__5_.Q
+    n90: U100.B1 U105.B1 U109.A2 U114.ZN U131.A3 U85.B1 U90.B1 U95.B1

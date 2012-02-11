@@ -1,0 +1,21 @@
+This Python library facilitates parsing Verilog netlists.  It has ONLY ever been tested on flattened gate-level netlists, so I wouldn't expect it to work out of the box on anything else.
+
+requirements.txt
+This file lists the dependencies for this library. If you have virtualenv/pip installed (recommended), just do 
+$ pip install -r requirements.txt
+
+
+verilogParse.py
+This file is based on http://pyparsing.wikispaces.com/file/view/verilogParse.py
+It has been modified to (1) build our Netlist datastructure during parsing and (2) to allow wires with names like "input45"
+
+The rest of the files build the Netlist datastructure.
+
+Example Usage:
+
+See the doctest inside the Netlist class in Netlist.py for some example usage. 
+To run the test,
+
+python Netlist.py -v
+
+
