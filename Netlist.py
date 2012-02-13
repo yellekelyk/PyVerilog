@@ -122,6 +122,13 @@ class Netlist:
         self.__mods[mod.name] = mod
 
 
+    def dumpYAML(self, yamlFile):
+        " Dump self to a YAML file"
+        
+        FH = open( yamlFile, 'w' )
+        FH.write( yaml.dump( self ) )
+        FH.close()
+
     def readYAML(self, yamlFile):
         " Read a YAML config file, build a netlist"
 
