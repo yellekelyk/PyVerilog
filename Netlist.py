@@ -6,6 +6,7 @@ import ConfigParser
 from ordereddict import OrderedDict
 import os
 import yaml
+import pickle
 import re
 import verilogParse
 
@@ -122,11 +123,11 @@ class Netlist:
         self.__mods[mod.name] = mod
 
 
-    def dumpYAML(self, yamlFile):
+    def dumpPickle(self, piklFile):
         " Dump self to a YAML file"
         
-        FH = open( yamlFile, 'w' )
-        FH.write( yaml.dump( self ) )
+        FH = open( piklFile, 'w' )
+        pickle.dump( self, FH )
         FH.close()
 
     def readYAML(self, yamlFile):
