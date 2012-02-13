@@ -124,7 +124,7 @@ class Netlist:
 
 
     def dumpPickle(self, piklFile):
-        " Dump self to a YAML file"
+        " Dump self to a pickle file"
         
         FH = open( piklFile, 'w' )
         pickle.dump( self, FH )
