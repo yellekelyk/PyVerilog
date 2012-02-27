@@ -58,7 +58,6 @@ class Netlist:
         self.__topMod = None
         self.__yaml = dict()
     
-    
     def link(self, topModule):
         " link the design together"
         if topModule not in self.__mods:
@@ -119,6 +118,42 @@ class Netlist:
         """ Parse a Gate-level Verilog file using Python"""
         mod = verilogParse.parseFile(verilogFile)
         self.__mods[mod.name] = mod
+    
+    def writeVerilog(self, vFileName):
+        """ Write a gate-level verilog file """
+        
+        tm = self.mods[ self.topMod ]
+        lines = []
+        
+        # declare the module
+        ports = ', '.join( tm.ports )
+        lines.append( 'module %s( %s );' % ( self.topMod, ports ) )
+        lines.append( '' )
+        
+        # declare i/o ports
+        for p in tm.ports.values():
+            if   p.direction == 'in':  lines.append( '    input  %s;' % ( p.name ))
+            elif p.direction == 'out': lines.append( '    output %s;' % ( p.name ))
+            else: assert False
+        lines.append( '' )
+        
+        # declare the wires
+        for n in tm.nets:
+            lines.append( '    wire %s;' % ( n ))
+        lines.append( '' )
+        
+        # instantiate the cells        
+        for c in tm.cells.values():
+            ports = []
+            for p in c.pins.values():
+                ports.append( '.%s( %s )' % ( p.name, p.net.name ))
+            ports = ', '.join( ports )
+            lines.append( '    %s %s( %s );' % ( c.submodname, c.name, ports ))
+        lines.append( 'endmodule' )
+        VFH = open( vFileName, 'w' )
+        for line in lines:
+            VFH.write( line + '\n' )
+        VFH.close()
     
     def dumpPickle(self, piklFile):
         " Dump self to a pickle file"
