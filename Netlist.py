@@ -180,20 +180,20 @@ class Netlist:
                 #todo: add parsing code to determine width msb/lsb here
                 width = int(inputs.get(name))
                 tuples = self.__makePortTupleList__(name, width)
-                for tup in tuples:
-                    mod.add_port(PortIn.PortIn({ "name":tup[0], "width":tup[1], "module":mod }))
+                for ( name, width, isBusMember, bitIdx, busName ) in tuples:
+                    mod.add_port(PortIn.PortIn({ "name":name, "width":width, "module":mod, "busMember":isBusMember, "bitIdx":bitIdx, "busName":busName }))
         
             outputs = myutils.cleanget(nl.get(modname), "outputs")
             for name in outputs:
                 #todo: add parsing code to determine width msb/lsb here
                 width = int(outputs.get(name))
                 tuples = self.__makePortTupleList__(name, width)
-                for tup in tuples:
-                    mod.add_port(PortOut.PortOut({ "name":tup[0], "width":tup[1], "module":mod} ))
+                for ( name, width, isBusMember, bitIdx, busName ) in tuples:
+                    mod.add_port(PortOut.PortOut({ "name":name, "width":width, "module":mod, "busMember":isBusMember, "bitIdx":bitIdx, "busName":busName } ))
             
             clocks = myutils.cleanget(nl.get(modname), "clocks")
             for name in clocks:
-                mod.add_port(PortClk.PortClk({"name":name, "module":mod}))
+                mod.add_port(PortClk.PortClk({"name":name, "module":mod, "busMember":False, "bitIdx":None, "busName":None }))
             
             cells = myutils.cleanget(nl.get(modname), "cells")
             for name in cells:
@@ -226,10 +226,10 @@ class Netlist:
         tuples = []
         
         if width == 1:
-            tuples.append((name, width))
+            tuples.append((name, width, False, None, None ))
         elif width > 1:
             for i in range(0,width):
-                tuples.append((name + "[" + str(i) + "]", 1))
+                tuples.append((name + "[" + str(i) + "]", 1, True, i, name ))
         else:
             raise Exception("Bad width parameter: " + width)
         
