@@ -207,7 +207,10 @@ class Netlist:
                     net = mod.ports.get(name)
                 else:
                     #todo: add parsing code to determine width msb/lsb here
-                    net = mod.new_net({"name":name, "width":1})
+                    net = mod.new_net({"name":name, "width":1, 
+                                       "busMember": False,
+                                       "bitIdx": None,
+                                       "busName": None})
                 for conn in ports.split():
                     cellport = conn.split('.')
                     if len(cellport) != 2:
