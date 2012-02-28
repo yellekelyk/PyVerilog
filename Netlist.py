@@ -181,9 +181,7 @@ class Netlist:
                 width = int(inputs.get(name))
                 tuples = self.__makePortTupleList__(name, width)
                 for tup in tuples:
-                    mod.add_port(PortIn.PortIn({"name":tup[0], 
-                                                "width":tup[1], 
-                                                "module":mod}))
+                    mod.add_port(PortIn.PortIn({ "name":tup[0], "width":tup[1], "module":mod }))
         
             outputs = myutils.cleanget(nl.get(modname), "outputs")
             for name in outputs:
@@ -191,9 +189,7 @@ class Netlist:
                 width = int(outputs.get(name))
                 tuples = self.__makePortTupleList__(name, width)
                 for tup in tuples:
-                    mod.add_port(PortOut.PortOut({"name":tup[0], 
-                                                  "width":tup[1], 
-                                                  "module":mod}))
+                    mod.add_port(PortOut.PortOut({ "name":tup[0], "width":tup[1], "module":mod} ))
             
             clocks = myutils.cleanget(nl.get(modname), "clocks")
             for name in clocks:

@@ -8,6 +8,9 @@ class Net(Generic):
         self.__width = self.get("width")
         self.__msb = self.get("msb", require=False)
         self.__lsb = self.get("lsb", require=False)
+        self.__busMember = self.get("busMember")
+        self.__busName = self.get("busName")
+        self.__bitIdx  = self.get("bitIdx")
 
         if self.__width > 1:          
             if self.__msb == None or self.__lsb == None:
@@ -25,11 +28,15 @@ class Net(Generic):
         self.__fanin = None
         self.__fanout = []
 
-    width  = property(lambda self: self.__width)
-    msb    = property(lambda self: self.__msb)
-    lsb    = property(lambda self: self.__lsb)
-    fanin  = property(lambda self: self.__fanin)
-    fanout = property(lambda self: self.__fanout)
+    width   = property(lambda self: self.__width)
+    msb     = property(lambda self: self.__msb)
+    lsb     = property(lambda self: self.__lsb)
+    fanin   = property(lambda self: self.__fanin)
+    fanout  = property(lambda self: self.__fanout)
+    bitIdx  = property(lambda self: self.__bitIdx)
+    busName = property(lambda self: self.__busName)
+    busMember = property(lambda self: self.__busMember)
+    
 
     def setFanin(self, pin):
         if self.__fanin != None and self.__fanin != pin:

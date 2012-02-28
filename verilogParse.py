@@ -109,7 +109,6 @@ def parseModule(s,l,t):
     global module
     module = Module.Module({"name": t[0]})
 
-
 def parsePort(s,l,t,port):
     global module
     width=1
@@ -124,26 +123,18 @@ def parsePort(s,l,t,port):
         if token == 'clk' or token == 'CLK' or token == 'Clk':
             import PortClk
             if width != 1:
-                raise Exception("Expect clock signal " + token + 
-                                " to have width=1, not " + str(width))
-
-            module.add_port(PortClk.PortClk({"name":token,
-                                             "module":module}))
+                raise Exception("Expect clock signal " + token + " to have width=1, not " + str(width))
+            module.add_port(PortClk.PortClk({ "name":token, "module":module, "busMember":False, "bitIdx":None, "busName":None } ))
         elif token != ',':
             if width == 1:
-                module.add_port(port({"name":token,
-                                      "width":width,
-                                      "module":module}))
+                module.add_port(port({ "name":token, "width":width, "module":module, "busMember":False, "bitIdx":None, "busName":None }))
             else:
                 # account for multi-bit ports by adding a new port for each bit
-                for i in range(0,width):
-                    module.add_port(port({"name":token + "[" + str(i) + "]",
-                                          "width": 1,
-                                          "module": module}))
-                    
+                for i in range( 0, width ):
+                    module.add_port(port({ "name":token + "[" + str(i) + "]", "width": 1, "module":module, "busMember":True, "bitIdx":i, "busName":token }))
+        #
         idx += 1
         token = t[idx]
-
 
 def parseInput(s,l,t):
     import PortIn
@@ -165,8 +156,7 @@ def parseSubmod(s,l,t):
     if t[1][0][0] == "#":
         raise Exception("This cell might have parameters? " + str(t[1][0]))
     name = t[1][0][0]
-    cell = module.new_cell({"name" : name,
-                            "submodname": submodname})
+    cell = module.new_cell({ "name" : name, "submodname": submodname })
     
     for tok in t[1][1]:
         # look for pin-connections
@@ -174,23 +164,29 @@ def parseSubmod(s,l,t):
             if len(tok) != 4:
                 raise Exception("Expected this to have length 4")
             netName = tok[2][0]
+            isBus = False
             if len(tok[2]) > 1:
                 # account for possible bit select (eg [0])
-                netName += "[" + str(tok[2][1][1]) + "]"
+                busName = netName
+                bitIdx  = tok[2][1][1]
+                netName += "[" + str( bitIdx ) + "]"
+                isBus = True
             if netName in module.ports:
                 net = module.ports.get(netName)
             elif netName in module.nets:
                 net = module.nets.get(netName)
             else:
-                net = module.new_net({"name":netName, "width":1})
-            
+                if isBus:
+                    net = module.new_net({ "name":netName, "width":1, "busMember":False, "bitIdx":None,   "busName":None    })
+                else:
+                    net = module.new_net({ "name":netName, "width":1, "busMember":True,  "bitIdx":bitIdx, "busName":busName })
+            #
             tmp = tok[0].split('.')
             if len(tmp) != 2:
                 raise  Exception("Bad pin decl " + str(tmp))
             pinName = tmp[1]
             pin = cell.new_pin({"name":pinName, "portname":pinName})
             pin.connectNet(net)
-
 
 verilogbnf = None
 def Verilog_BNF():
