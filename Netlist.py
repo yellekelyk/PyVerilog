@@ -125,21 +125,73 @@ class Netlist:
         tm = self.mods[ self.topMod ]
         lines = []
         
+        # -- ?? -- "busMember":False, "bitIdx":None,   "busName":None    })
+        
         # declare the module
-        ports = ', '.join( tm.ports )
-        lines.append( 'module %s( %s );' % ( self.topMod, ports ) )
+        ports = set()
+        minBit = {}
+        maxBit = {}
+        for p in tm.ports.values():
+            if p.busMember:
+                ports.add( ( p.busName, p.direction ) )
+                if p.busName in minBit:
+                    l = minBit[ p.busName ]
+                    r = maxBit[ p.busName ]
+                    assert p.bitIdx != l
+                    assert p.bitIdx != r
+                    if p.bitIdx < l: minBit[ p.busName ] = p.bitIdx
+                    if p.bitIdx > r: maxBit[ p.busName ] = p.bitIdx
+                else:
+                    minBit[ p.busName ] = p.bitIdx
+                    maxBit[ p.busName ] = p.bitIdx
+            else:
+                ports.add( ( p.name, p.direction ) )
+        portsCsv = ', '.join( [ x[0] for x in list( ports ) ] )
+        lines.append( 'module %s( %s );' % ( self.topMod, portsCsv ) )
         lines.append( '' )
         
         # declare i/o ports
-        for p in tm.ports.values():
-            if   p.direction == 'in':  lines.append( '    input  %s;' % ( p.name ))
-            elif p.direction == 'out': lines.append( '    output %s;' % ( p.name ))
-            else: assert False
+        for ( portName, dirxn ) in ports:
+            if portName in minBit:
+                assert minBit[ portName ] == 0
+                l = minBit[ portName ]
+                r = maxBit[ portName ]
+                if   dirxn == 'in':  lines.append( '    input  [ %2d:%2d ] %s;' % ( r, l, portName ))
+                elif dirxn == 'out': lines.append( '    output [ %2d:%2d ] %s;' % ( r, l, portName ))
+            else:
+                if   dirxn == 'in':  lines.append( '    input  %s;' % ( portName ))
+                elif dirxn == 'out': lines.append( '    output %s;' % ( portName ))
+                else: assert False
         lines.append( '' )
         
         # declare the wires
-        for n in tm.nets:
-            lines.append( '    wire %s;' % ( n ))
+        minBit = {}
+        maxBit = {}
+        nets = set()
+        for n in tm.nets.values():
+              if n.busMember:
+                  nets.add( n.busName )
+                  if n.busName in minBit:
+                      l = minBit[ n.busName ]
+                      r = maxBit[ n.busName ]
+                      assert int( n.bitIdx ) != l
+                      assert int( n.bitIdx ) != r
+                      if int( n.bitIdx ) < l: minBit[ n.busName ] = int ( n.bitIdx )
+                      if int( n.bitIdx ) > r: maxBit[ n.busName ] = int ( n.bitIdx )
+                  else:
+                      minBit[ n.busName ] = int( n.bitIdx )
+                      maxBit[ n.busName ] = int( n.bitIdx )
+              else:
+                  nets.add( n.name )
+        
+        for netName in nets:
+            if netName in minBit:
+                #assert minBit[ netName ] == 0
+                l = minBit[ netName ]
+                r = maxBit[ netName ]
+                lines.append( '    wire [ %2d:%2d ] %s;' % ( r, l, netName ) )
+            else:
+                lines.append( '    wire %s;' % ( netName ))
         lines.append( '' )
         
         # instantiate the cells        

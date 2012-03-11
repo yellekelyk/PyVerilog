@@ -177,9 +177,15 @@ def parseSubmod(s,l,t):
                 net = module.nets.get(netName)
             else:
                 if isBus:
-                    net = module.new_net({ "name":netName, "width":1, "busMember":False, "bitIdx":None,   "busName":None    })
-                else:
                     net = module.new_net({ "name":netName, "width":1, "busMember":True,  "bitIdx":bitIdx, "busName":busName })
+                else:
+                    try:
+                        net = module.new_net({ "name":netName, "width":1, "busMember":False, "bitIdx":None,   "busName":None    })
+                    except:
+                        print 'tok =', tok
+                        print 'netName =', netName
+                        print 'isBus =', isBus
+                        raise
             #
             tmp = tok[0].split('.')
             if len(tmp) != 2:
